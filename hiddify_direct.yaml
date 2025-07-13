@@ -1,12 +1,42 @@
-mixed-port: 7890        # HTTP+SOCKS
-allow-lan: true         # 热点共享
-mode: direct            # 全直连
+# === Basic ===
+allow-lan: true                 # 允许热点 / 局域网访问 :contentReference[oaicite:5]{index=5}
+external-controller: 0.0.0.0:9090
 log-level: info
+mixed-port: 7890                # HTTP+SOCKS 混合端口，Hiddify 缺省监听此口 :contentReference[oaicite:6]{index=6}
+mode: Rule                      # 保持 SystemProxy 原模式格式
+
+# === Optional switches (保持原文件风格，可按需注释) ===
 ipv6: true
+unified-delay: true             # 让所有测速/延迟指标统一算法
+tcp-concurrent: true            # 并发拨号，参考 Clash 文档 :contentReference[oaicite:7]{index=7}
+profile:
+  store-selected: true
+  store-fake-ip: true
 
-outbounds:
-  - name: direct
-    type: direct
+# === DNS 配置（与 SystemProxy 类似，仅示范最常用字段） ===
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - 223.5.5.5
+    - 1.1.1.1
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
 
+# === *核心差异*：不含任何远程节点 ===
+proxies: []                     # 留空，避免 Clash 报语法错
+
+proxy-groups:
+  # 依旧保留一个同名组，方便 GUI 操作；只包含内建 DIRECT
+  - name: DIRECT
+    type: select
+    proxies:
+      - DIRECT
+
+# === 规则 ===
 rules:
-  - MATCH,direct
+  # 中国内网或局域网规则可自行追加；这里只保留兜底直连
+  - MATCH,DIRECT
