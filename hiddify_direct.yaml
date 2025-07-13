@@ -1,42 +1,187 @@
-# === Basic ===
-allow-lan: true                 # 允许热点 / 局域网访问 :contentReference[oaicite:5]{index=5}
+allow-lan: true
 external-controller: 0.0.0.0:9090
 log-level: info
-mixed-port: 7890                # HTTP+SOCKS 混合端口，Hiddify 缺省监听此口 :contentReference[oaicite:6]{index=6}
-mode: Rule                      # 保持 SystemProxy 原模式格式
-
-# === Optional switches (保持原文件风格，可按需注释) ===
-ipv6: true
-unified-delay: true             # 让所有测速/延迟指标统一算法
-tcp-concurrent: true            # 并发拨号，参考 Clash 文档 :contentReference[oaicite:7]{index=7}
-profile:
-  store-selected: true
-  store-fake-ip: true
-
-# === DNS 配置（与 SystemProxy 类似，仅示范最常用字段） ===
-dns:
-  enable: true
-  listen: 0.0.0.0:53
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  default-nameserver:
-    - 223.5.5.5
-    - 1.1.1.1
-  nameserver:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
-
-# === *核心差异*：不含任何远程节点 ===
-proxies: []                     # 留空，避免 Clash 报语法错
-
+mixed-port: 7890
+mode: Rule
+proxies:
+- name: DIRECT
+  type: direct
+  udp: true
+- cipher: aes-256-cfb
+  name: 🇲🇩_MD_摩尔多瓦_0@0
+  password: f8f7aCzcPKbsF8p3
+  port: 989
+  server: 91.132.94.200
+  type: ss
+- cipher: aes-256-cfb
+  name: 🇲🇩_MD_摩尔多瓦_1_0@1
+  password: f8f7aCzcPKbsF8p3
+  port: 989
+  server: 185.153.197.5
+  type: ss
+- alterId: 0
+  cipher: auto
+  name: 🇨🇳_CN_中国_0@2
+  network: tcp
+  port: 50002
+  server: 120.26.55.225
+  type: vmess
+  uuid: 418048af-a293-4b99-9b0c-98ca3580dd24
+- alterId: 2
+  cipher: auto
+  name: 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  network: ws
+  port: 30829
+  server: v29.heduian.link
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  ws-opts:
+    headers:
+      host: ocbc.com
+    path: /oooo
+- cipher: aes-256-gcm
+  name: 🇰🇷_KR_韩国_0@4
+  password: NiznLvoIuy
+  port: 19378
+  server: 220.124.31.130
+  type: ss
+- alterId: 2
+  cipher: auto
+  name: 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  network: ws
+  port: 30807
+  server: v7.heduian.link
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  ws-opts:
+    headers:
+      host: ocbc.com
+    path: /oooo
+- cipher: aes-256-cfb
+  name: 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  password: qwerREWQ@@
+  port: 15098
+  server: p222.panda001.net
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 🇺🇦_UA_乌克兰_0@7
+  password: 9tqhMdIrTkgQ46PvhyAtMH
+  port: 443
+  server: switcher-nick-croquet.freesocks.work
+  type: ss
+- alterId: 0
+  cipher: auto
+  name: 🇺🇸_US_美国_1_1@0
+  network: ws
+  port: 8880
+  server: ssrsub.cloudflare.182682.xyz
+  type: vmess
+  uuid: 67828a6e-0144-4e57-8169-2447a3dd2e61
+  ws-opts:
+    headers:
+      host: cdn-node-oss-99.paofu.de
+    path: /profile/telegram@ssrsub
 proxy-groups:
-  # 依旧保留一个同名组，方便 GUI 操作；只包含内建 DIRECT
-  - name: DIRECT
-    type: select
-    proxies:
-      - DIRECT
-
-# === 规则 ===
+- name: 🚀 节点选择
+  proxies:
+  - DIRECT
+  - 🇲🇩_MD_摩尔多瓦_0@0
+  - 🇲🇩_MD_摩尔多瓦_1_0@1
+  - 🇨🇳_CN_中国_0@2
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  - 🇰🇷_KR_韩国_0@4
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  - 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  - 🇺🇦_UA_乌克兰_0@7
+  - 🇺🇸_US_美国_1_1@0
+  type: select
+- name: 🌍 国外媒体
+  proxies:
+  - 🚀 节点选择
+  - 🎯 全球直连
+  - 🇲🇩_MD_摩尔多瓦_0@0
+  - 🇲🇩_MD_摩尔多瓦_1_0@1
+  - 🇨🇳_CN_中国_0@2
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  - 🇰🇷_KR_韩国_0@4
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  - 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  - 🇺🇦_UA_乌克兰_0@7
+  - 🇺🇸_US_美国_1_1@0
+  type: select
+- name: 📲 电报信息
+  proxies:
+  - 🚀 节点选择
+  - 🎯 全球直连
+  - 🇲🇩_MD_摩尔多瓦_0@0
+  - 🇲🇩_MD_摩尔多瓦_1_0@1
+  - 🇨🇳_CN_中国_0@2
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  - 🇰🇷_KR_韩国_0@4
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  - 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  - 🇺🇦_UA_乌克兰_0@7
+  - 🇺🇸_US_美国_1_1@0
+  type: select
+- name: Ⓜ️ 微软服务
+  proxies:
+  - 🎯 全球直连
+  - 🚀 节点选择
+  - 🇲🇩_MD_摩尔多瓦_0@0
+  - 🇲🇩_MD_摩尔多瓦_1_0@1
+  - 🇨🇳_CN_中国_0@2
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  - 🇰🇷_KR_韩国_0@4
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  - 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  - 🇺🇦_UA_乌克兰_0@7
+  - 🇺🇸_US_美国_1_1@0
+  type: select
+- name: 🍎 苹果服务
+  proxies:
+  - 🚀 节点选择
+  - 🎯 全球直连
+  - 🇲🇩_MD_摩尔多瓦_0@0
+  - 🇲🇩_MD_摩尔多瓦_1_0@1
+  - 🇨🇳_CN_中国_0@2
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  - 🇰🇷_KR_韩国_0@4
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  - 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  - 🇺🇦_UA_乌克兰_0@7
+  - 🇺🇸_US_美国_1_1@0
+  type: select
+- name: 🎯 全球直连
+  proxies:
+  - DIRECT
+  - 🚀 节点选择
+  type: select
+- name: 🛑 全球拦截
+  proxies:
+  - REJECT
+  - DIRECT
+  type: select
+- name: 🍃 应用净化
+  proxies:
+  - REJECT
+  - DIRECT
+  type: select
+- name: 🐟 漏网之鱼
+  proxies:
+  - 🚀 节点选择
+  - 🎯 全球直连
+  - 🇲🇩_MD_摩尔多瓦_0@0
+  - 🇲🇩_MD_摩尔多瓦_1_0@1
+  - 🇨🇳_CN_中国_0@2
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_0@3
+  - 🇰🇷_KR_韩国_0@4
+  - 🇨🇳_CN_中国->🇺🇸_US_美国_1_0@5
+  - 🇰🇷_KR_韩国->🇲🇩_MD_摩尔多瓦_0@6
+  - 🇺🇦_UA_乌克兰_0@7
+  - 🇺🇸_US_美国_1_1@0
+  type: select
 rules:
-  # 中国内网或局域网规则可自行追加；这里只保留兜底直连
-  - MATCH,DIRECT
+- DOMAIN-SUFFIX,acl4.ssr,🎯 全球直连
+- IP-CIDR,106.2.64.0/18,🎯 全球直连,no-resolve
+- GEOIP,CN,🎯 全球直连
+- MATCH,🐟 漏网之鱼
