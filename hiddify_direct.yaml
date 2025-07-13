@@ -4,9 +4,6 @@ log-level: info
 mixed-port: 7890
 mode: Rule
 proxies:
-- name: DIRECT
-  type: direct
-  udp: true
 - cipher: aes-256-cfb
   name: 🇲🇩_MD_摩尔多瓦_0@0
   password: f8f7aCzcPKbsF8p3
