@@ -1,9 +1,12 @@
-mixed-port: 7890
-allow-lan: true     # 关键：对热点 / WLAN 开放
-mode: direct        # 整体直连
+mixed-port: 7890          # HTTP+SOCKS 混合端口
+allow-lan: true           # 监听 0.0.0.0，供热点/Wi-Fi 设备使用
+mode: direct              # 全局直连
 log-level: info
 ipv6: true
-proxies: []         # 零节点
-proxy-groups: []
+
+outbounds:                # ***必须存在，哪怕只有一个***
+  - name: direct
+    type: direct
+
 rules:
-  - MATCH,DIRECT
+  - MATCH,direct
