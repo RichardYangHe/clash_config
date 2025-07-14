@@ -4,6 +4,10 @@ log-level: info
 mixed-port: 7890
 mode: Rule
 proxies:
+- name: fake-DIRECT
+  type: ss
+  server: 198.18.0.254
+  port: 1234
 - cipher: aes-256-cfb
   name: 🇲🇩_MD_摩尔多瓦_0@0
   password: f8f7aCzcPKbsF8p3
@@ -81,7 +85,7 @@ proxies:
 proxy-groups:
 - name: 🚀 节点选择
   proxies:
-  - 198.18.0.254
+  - fake-DIRECT
   - DIRECT
   - 🇲🇩_MD_摩尔多瓦_0@0
   - 🇲🇩_MD_摩尔多瓦_1_0@1
