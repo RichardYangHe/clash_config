@@ -81,6 +81,7 @@ proxies:
 proxy-groups:
 - name: 🚀 节点选择
   proxies:
+  - 198.18.0.254
   - DIRECT
   - 🇲🇩_MD_摩尔多瓦_0@0
   - 🇲🇩_MD_摩尔多瓦_1_0@1
@@ -178,4 +179,5 @@ proxy-groups:
   - 🇺🇸_US_美国_1_1@0
   type: select
 rules:
+- IP-CIDR,198.18.0.254/32,DIRECT
 - MATCH,DIRECT
